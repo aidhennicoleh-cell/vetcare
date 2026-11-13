@@ -1,0 +1,621 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VETCARE | Veterinary Clinic</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f7fbfa;
+    color: #263b39;
+}
+
+header {
+    background: #087f70;
+    color: white;
+    padding: 20px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #b9f5e7;
+}
+
+.hero {
+    min-height: 440px;
+    padding: 100px 8%;
+    background: linear-gradient(120deg, #d8f5eb, #e9f8f5);
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    max-width: 650px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    color: #087f70;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+.btn {
+    display: inline-block;
+    background: #087f70;
+    color: white;
+    padding: 13px 25px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background: #056356;
+}
+
+section {
+    padding: 65px 8%;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.section-title h2 {
+    color: #087f70;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.about {
+    text-align: center;
+    line-height: 1.8;
+    max-width: 850px;
+    margin: auto;
+}
+
+.services {
+    background: #eaf7f3;
+}
+
+.service-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+}
+
+.service-card {
+    background: white;
+    padding: 25px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+    transition: 0.3s;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-card .emoji {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.service-card h3 {
+    color: #087f70;
+    margin-bottom: 10px;
+}
+
+.service-card p {
+    line-height: 1.6;
+}
+
+.booking {
+    background: #f7fbfa;
+}
+
+.booking-container {
+    max-width: 700px;
+    margin: auto;
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccd9d6;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid #087f70;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 85px;
+}
+
+.booking-container button {
+    width: 100%;
+}
+
+#confirmation {
+    display: none;
+    background: #e2f7eb;
+    border: 1px solid #8acba6;
+    color: #185c37;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    line-height: 1.8;
+}
+
+.contact {
+    background: #eaf7f3;
+    text-align: center;
+    line-height: 2;
+}
+
+.contact h2 {
+    color: #087f70;
+    margin-bottom: 15px;
+}
+
+footer {
+    background: #075c52;
+    color: white;
+    text-align: center;
+    padding: 22px;
+}
+
+@media(max-width: 600px) {
+    header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    nav {
+        line-height: 2.5;
+    }
+
+    .hero {
+        padding: 70px 7%;
+    }
+
+    .hero h1 {
+        font-size: 35px;
+    }
+
+    .booking-container {
+        padding: 22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="logo">🐾 VETCARE</div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#booking">Appointment</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<!-- HOME PAGE -->
+<div class="hero" id="home">
+    <div class="hero-content">
+        <h1>We Care for Your Furry Friends!</h1>
+
+        <p>
+            Welcome to VETCARE Veterinary Clinic!
+            Your trusted partner in keeping your pets
+            healthy, happy, and safe. We provide quality
+            veterinary services with love and compassion.
+        </p>
+
+        <a href="#booking" class="btn">
+            Book an Appointment
+        </a>
+    </div>
+</div>
+
+<!-- ABOUT US -->
+<section id="about">
+    <div class="section-title">
+        <h2>About VETCARE</h2>
+        <p>Your Pet's Health is Our Priority</p>
+    </div>
+
+    <div class="about">
+        <p>
+            VETCARE is a veterinary clinic dedicated to
+            providing quality healthcare and proper
+            treatment for animals. Our goal is to ensure
+            that every pet receives the care and attention
+            they deserve.
+
+            We believe that pets are family, and they
+            deserve the best healthcare services.
+        </p>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+
+    <div class="section-title">
+        <h2>Our Veterinary Services</h2>
+        <p>Quality care for every pet.</p>
+    </div>
+
+    <div class="service-container">
+
+        <div class="service-card">
+            <div class="emoji">🩺</div>
+            <h3>General Checkup</h3>
+            <p>
+                Regular health examinations to monitor
+                your pet's overall condition.
+            </p>
+        </div>
+
+        <div class="service-card">
+            <div class="emoji">💉</div>
+            <h3>Vaccination</h3>
+            <p>
+                Preventive vaccinations to help protect
+                your pets from diseases.
+            </p>
+        </div>
+
+        <div class="service-card">
+            <div class="emoji">🛁</div>
+            <h3>Pet Grooming</h3>
+            <p>
+                Bathing, cleaning, and grooming to keep
+                your pets fresh and comfortable.
+            </p>
+        </div>
+
+        <div class="service-card">
+            <div class="emoji">🦷</div>
+            <h3>Dental Care</h3>
+            <p>
+                Dental examinations and oral healthcare
+                for your beloved pets.
+            </p>
+        </div>
+
+        <div class="service-card">
+            <div class="emoji">🔬</div>
+            <h3>Laboratory Tests</h3>
+            <p>
+                Laboratory examinations to help
+                veterinarians assess pet health.
+            </p>
+        </div>
+
+        <div class="service-card">
+            <div class="emoji">🐕</div>
+            <h3>Pet Consultation</h3>
+            <p>
+                Professional veterinary consultations
+                for your pet's health concerns.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<!-- APPOINTMENT BOOKING -->
+<section class="booking" id="booking">
+
+    <div class="section-title">
+        <h2>Schedule an Appointment</h2>
+        <p>Fill out the form to book your pet's checkup.</p>
+    </div>
+
+    <div class="booking-container">
+
+        <form id="appointmentForm">
+
+            <div class="form-group">
+                <label>Owner's Full Name</label>
+                <input
+                    type="text"
+                    id="owner"
+                    placeholder="Enter your full name"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Contact Number</label>
+                <input
+                    type="tel"
+                    id="contact"
+                    placeholder="Enter your contact number"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Pet's Name</label>
+                <input
+                    type="text"
+                    id="petName"
+                    placeholder="Enter your pet's name"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Pet Type</label>
+                <select id="petType" required>
+                    <option value="">Select Pet Type</option>
+                    <option>Dog</option>
+                    <option>Cat</option>
+                    <option>Rabbit</option>
+                    <option>Bird</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Select Veterinary Service</label>
+                <select id="service" required>
+                    <option value="">Choose a Service</option>
+                    <option>General Checkup</option>
+                    <option>Vaccination</option>
+                    <option>Pet Grooming</option>
+                    <option>Dental Care</option>
+                    <option>Laboratory Tests</option>
+                    <option>Pet Consultation</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Appointment Date</label>
+                <input
+                    type="date"
+                    id="date"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Appointment Time</label>
+                <select id="time" required>
+                    <option value="">Select Time</option>
+                    <option>09:00 AM</option>
+                    <option>10:00 AM</option>
+                    <option>11:00 AM</option>
+                    <option>01:00 PM</option>
+                    <option>02:00 PM</option>
+                    <option>03:00 PM</option>
+                    <option>04:00 PM</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Additional Information</label>
+                <textarea
+                    id="notes"
+                    placeholder="Describe your pet's concerns (optional)">
+                </textarea>
+            </div>
+
+            <button type="submit" class="btn">
+                Submit Appointment
+            </button>
+
+        </form>
+
+        <!-- BOOKING CONFIRMATION -->
+        <div id="confirmation">
+            <h3>✅ Appointment Request Saved!</h3>
+            <div id="bookingDetails"></div>
+            <p>
+                Please contact the clinic to confirm
+                your appointment schedule.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+
+    <h2>Contact Us</h2>
+
+    <p>🐾 VETCARE Veterinary Clinic</p>
+    <p>📍 Clinic Address: Enter your clinic address</p>
+    <p>📞 Contact: Enter your phone number</p>
+    <p>📧 Email: vetcare@example.com</p>
+
+    <p>Monday - Saturday | 9:00 AM - 5:00 PM</p>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>
+        © 2026 VETCARE Veterinary Clinic.
+        All Rights Reserved.
+    </p>
+    <p>Made with ❤️ for our beloved pets.</p>
+</footer>
+
+<!-- JAVASCRIPT -->
+<script>
+
+// Set minimum appointment date to today
+const dateInput = document.getElementById("date");
+
+const today = new Date();
+const localToday = new Date(
+    today.getTime() - today.getTimezoneOffset() * 60000
+).toISOString().split("T")[0];
+
+dateInput.min = localToday;
+
+// Appointment form submission
+document.getElementById("appointmentForm")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const booking = {
+
+        bookingID: "VC" + Date.now(),
+
+        owner: document.getElementById("owner").value,
+        contact: document.getElementById("contact").value,
+        email: document.getElementById("email").value,
+
+        petName: document.getElementById("petName").value,
+        petType: document.getElementById("petType").value,
+
+        service: document.getElementById("service").value,
+        date: document.getElementById("date").value,
+        time: document.getElementById("time").value,
+
+        notes: document.getElementById("notes").value,
+
+        status: "Pending"
+    };
+
+    // Check appointment date
+    if (booking.date < localToday) {
+        alert("Please select a valid appointment date.");
+        return;
+    }
+
+    // Retrieve existing bookings
+    let appointments = JSON.parse(
+        localStorage.getItem("vetcareAppointments")
+    ) || [];
+
+    // Prevent duplicate time slots
+    const slotTaken = appointments.some(function(item) {
+        return item.date === booking.date &&
+               item.time === booking.time;
+    });
+
+    if (slotTaken) {
+        alert("This appointment time is already reserved. Please choose another time.");
+        return;
+    }
+
+    // Save appointment
+    appointments.push(booking);
+
+    localStorage.setItem(
+        "vetcareAppointments",
+        JSON.stringify(appointments)
+    );
+
+    // Show confirmation
+    document.getElementById("bookingDetails").innerHTML = `
+        <p><strong>Booking ID:</strong> ${booking.bookingID}</p>
+        <p><strong>Owner:</strong> ${escapeHTML(booking.owner)}</p>
+        <p><strong>Pet Name:</strong> ${escapeHTML(booking.petName)}</p>
+        <p><strong>Pet Type:</strong> ${escapeHTML(booking.petType)}</p>
+        <p><strong>Service:</strong> ${escapeHTML(booking.service)}</p>
+        <p><strong>Date:</strong> ${escapeHTML(booking.date)}</p>
+        <p><strong>Time:</strong> ${escapeHTML(booking.time)}</p>
+        <p><strong>Status:</strong> Pending</p>
+    `;
+
+    document.getElementById("confirmation").style.display = "block";
+
+    // Reset form
+    this.reset();
+
+    // Scroll to confirmation
+    document.getElementById("confirmation")
+        .scrollIntoView({ behavior: "smooth" });
+
+});
+
+// Prevent user input from being interpreted as HTML
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, function(char) {
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[char];
+    });
+}
+
+</script>
+
+</body>
+</html>

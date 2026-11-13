@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VETCARE | Admin Dashboard</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f8f6;
+    color: #263b39;
+}
+header {
+    background: #087f70;
+    color: white;
+    padding: 22px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+header h1 { margin: 0; }
+header a { color: white; text-decoration: none; }
+main { padding: 28px 5%; }
+h2 { color: #087f70; }
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+.stat, section {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #00000012;
+}
+.stat h3 { margin: 0 0 10px; color: #52615e; }
+.stat p { font-size: 28px; font-weight: bold; margin: 0; color: #087f70; }
+section { margin-bottom: 24px; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 700px; }
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #e4ece9;
+    text-align: left;
+    font-size: 14px;
+}
+th { background: #e4f5f0; }
+button, select, input, textarea {
+    padding: 9px;
+    border: 1px solid #ccd9d5;
+    border-radius: 6px;
+    font: inherit;
+}
+button {
+    background: #087f70;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+button:hover { background: #06685c; }
+.danger { background: #b83b3b; }
+form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+}
+form textarea { min-height: 75px; }
+form button { grid-column: 1 / -1; }
+.message { color: #087f70; font-weight: bold; }
+.empty { color: #71817c; padding: 12px 0; }
+.small { font-size: 13px; color: #64736f; }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>🐾 VETCARE Admin Dashboard</h1>
+    <a href="index.html">← Back to Website</a>
+</header>
+
+<main>
+    <h2>Dashboard Overview</h2>
+
+    <div class="stats">
+        <div class="stat">
+            <h3>Total Appointments</h3>
+            <p id="appointmentCount">0</p>
+        </div>
+        <div class="stat">
+            <h3>Pending Appointments</h3>
+            <p id="pendingCount">0</p>
+        </div>
+        <div class="stat">
+            <h3>Total Patients</h3>
+            <p id="patientCount">0</p>
+        </div>
+        <div class="stat">
+            <h3>Treatment Records</h3>
+            <p id="treatmentCount">0</p>
+        </div>
+    </div>
+
+    <section>
+        <h2>Appointment Management</h2>
+        <p class="small">View bookings submitted through the VETCARE website.</p>
+        <div id="appointments"></div>
+    </section>
+
+    <section>
+        <h2>Patient Records</h2>
+        <div id="patients"></div>
+    </section>
+
+    <section>
+        <h2>Add Treatment Record</h2>
+        <form id="treatmentForm">
+            <select id="patientSelect" required>
+                <option value="">Select a patient</option>
+            </select>
+            <input id="treatmentName" placeholder="Treatment name" required>
+            <input id="vetName" placeholder="Veterinarian name" required>
+            <input id="treatmentDate" type="date" required>
+            <textarea id="treatmentNotes" placeholder="Treatment notes"></textarea>
+            <button type="submit">Save Treatment Record</button>
+        </form>
+        <p id="formMessage" class="message"></p>
+    </section>
+
+    <section>
+        <h2>Treatment History</h2>
+        <div id="treatments"></div>
+    </section>
+</main>
+
+<script>
+const APPOINTMENT_KEY = "vetcareAppointments";
+const TREATMENT_KEY = "vetcareTreatments";
+
+function getAppointments() {
+    try {
+        return JSON.parse(localStorage.getItem(APPOINTMENT_KEY)) || [];
+    } catch {
+        return [];
+    }
+}
+
+function getTreatments() {
+    try {
+        return JSON.parse(localStorage.getItem(TREATMENT_KEY)) || [];
+    } catch {
+        return [];
+    }
+}
+
+function safe(value) {
+    const div = document.createElement("div");
+    div.textContent = value ?? "";
+    return div.innerHTML;
+}
+
+function getPatients() {
+    const appointments = getAppointments();
+    const patients = new Map();
+
+    appointments.forEach(a => {
+        const key = (a.petName || "").trim().toLowerCase();
+        if (key && !patients.has(key)) {
+            patients.set(key, {
+                petName: a.petName,
+                petType: a.petType || "",
+                owner: a.owner || "",
+                contact: a.contact || ""
+            });
+        }
+    });
+
+    return Array.from(patients.values());
+}
+
+function updateStatus(id, status) {
+    const appointments = getAppointments();
+    const updated = appointments.map(a =>
+        a.bookingID === id ? { ...a, status } : a
+    );
+
+    localStorage.setItem(APPOINTMENT_KEY, JSON.stringify(updated));
+    renderDashboard();
+}
+
+function renderAppointments() {
+    const appointments = getAppointments();
+    const container = document.getElementById("appointments");
+
+    if (!appointments.length) {
+        container.innerHTML = '<p class="empty">No appointments yet.</p>';
+        return;
+    }
+
+    container.innerHTML = `
+    <table>
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Owner</th>
+                <th>Pet</th>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        ${appointments.map(a => `
+            <tr>
+                <td>${safe(a.bookingID)}</td>
+                <td>${safe(a.owner)}</td>
+                <td>${safe(a.petName)} (${safe(a.petType)})</td>
+                <td>${safe(a.service)}</td>
+                <td>${safe(a.date)}</td>
+                <td>${safe(a.time)}</td>
+                <td>
+                    <select onchange="updateStatus('${safe(a.bookingID)}', this.value)">
+                        ${["Pending", "Confirmed", "Completed", "Cancelled"].map(s =>
+                            `<option value="${s}" ${a.status === s ? "selected" : ""}>${s}</option>`
+                        ).join("")}
+                    </select>
+                </td>
+            </tr>
+        `).join("")}
+        </tbody>
+    </table>`;
+}
+
+function renderPatients() {
+    const patients = getPatients();
+    const container = document.getElementById("patients");
+
+    if (!patients.length) {
+        container.innerHTML = '<p class="empty">No patient records yet. Patient details will appear when an appointment is booked.</p>';
+    } else {
+        container.innerHTML = `
+        <table>
+            <thead>
+                <tr><th>Pet Name</th><th>Pet Type</th><th>Owner</th><th>Contact</th></tr>
+            </thead>
+            <tbody>
+                ${patients.map(p => `
+                    <tr>
+                        <td>${safe(p.petName)}</td>
+                        <td>${safe(p.petType)}</td>
+                        <td>${safe(p.owner)}</td>
+                        <td>${safe(p.contact)}</td>
+                    </tr>
+                `).join("")}
+            </tbody>
+        </table>`;
+    }
+
+    const select = document.getElementById("patientSelect");
+    const previous = select.value;
+
+    select.innerHTML = '<option value="">Select a patient</option>' +
+        patients.map(p =>
+            `<option value="${safe(p.petName)}">${safe(p.petName)} — ${safe(p.owner)}</option>`
+        ).join("");
+
+    if (patients.some(p => p.petName === previous)) {
+        select.value = previous;
+    }
+}
+
+function renderTreatments() {
+    const treatments = getTreatments();
+    const container = document.getElementById("treatments");
+
+    if (!treatments.length) {
+        container.innerHTML = '<p class="empty">No treatment records yet.</p>';
+        return;
+    }
+
+    container.innerHTML = `
+    <table>
+        <thead>
+            <tr>
+                <th>Pet</th>
+                <th>Treatment</th>
+                <th>Veterinarian</th>
+                <th>Date</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${treatments.map(t => `
+                <tr>
+                    <td>${safe(t.petName)}</td>
+                    <td>${safe(t.treatmentName)}</td>
+                    <td>${safe(t.vetName)}</td>
+                    <td>${safe(t.date)}</td>
+                    <td>${safe(t.notes)}</td>
+                </tr>
+            `).join("")}
+        </tbody>
+    </table>`;
+}
+
+function renderDashboard() {
+    const appointments = getAppointments();
+    const patients = getPatients();
+    const treatments = getTreatments();
+
+    document.getElementById("appointmentCount").textContent = appointments.length;
+    document.getElementById("pendingCount").textContent =
+        appointments.filter(a => (a.status || "Pending") === "Pending").length;
+    document.getElementById("patientCount").textContent = patients.length;
+    document.getElementById("treatmentCount").textContent = treatments.length;
+
+    renderAppointments();
+    renderPatients();
+    renderTreatments();
+}
+
+document.getElementById("treatmentForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const petName = document.getElementById("patientSelect").value;
+    if (!petName) {
+        document.getElementById("formMessage").textContent =
+            "Please select a patient first.";
+        return;
+    }
+
+    const record = {
+        petName,
+        treatmentName: document.getElementById("treatmentName").value.trim(),
+        vetName: document.getElementById("vetName").value.trim(),
+        date: document.getElementById("treatmentDate").value,
+        notes: document.getElementById("treatmentNotes").value.trim()
+    };
+
+    const treatments = getTreatments();
+    treatments.push(record);
+    localStorage.setItem(TREATMENT_KEY, JSON.stringify(treatments));
+
+    this.reset();
+    document.getElementById("formMessage").textContent =
+        "Treatment record saved successfully!";
+
+    renderDashboard();
+});
+
+renderDashboard();
+</script>
+
+</body>
+</html>
